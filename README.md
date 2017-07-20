@@ -5,3 +5,8 @@ rating and ranking methods.
 
 The project website is 
 [shinault.netlify.com/project/rater/](shinault.netlify.com/project/rater/).
+
+
+
+
+
