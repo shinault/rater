@@ -96,13 +96,17 @@ graph_nodes <- function(x, y, other_rankings = NULL) {
 graph_edges <- function(x, y, other_rankings = NULL) {
   labs   <- node_labels(x, y, other_rankings)
   shift  <- length(labs[[1]])
-  notinx <- setdiff(y, x)
   left   <- 1:length(x)
   right  <- shift + purrr::map_dbl(x, function(j) ifelse(j %in% y, which(y == j), length(y) + 1))
+  notinx <- shift + which(!(y %in% x))
+  right  <- append(right, notinx)
+  left   <- append(left, rep(shift, times = length(notinx)))
   DiagrammeR::create_edge_df(
     from = left,
     to   = right,
-    arrowhead = "none"
+    arrowhead = "none",
+    tailport = "e",
+    headport = "w"
   )
 }
 
