@@ -9,6 +9,7 @@ Author@R:
     email="gshinault@gmail.com", role=c("aut", "cre"))
 Imports:
     assertthat,
+    DiagrammeR,
     purrr
 License: GPL-2
 URL: shinault.netlify.com/project/rater

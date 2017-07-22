@@ -27,22 +27,34 @@ kendall <- function(x, y, unranked_items=NULL) {
   (2*n_conc - choose(n_items, 2)) / (n_conc + n_disc)
 }
 
+#' Plot two rankings
+#'
+#' @export
+rankplot <- function(x, y, other_rankings = NULL) {
+  DiagrammeR::render_graph(
+    DiagrammeR::create_graph(
+      graph_nodes(x, y, other_rankings),
+      graph_edges(x, y, other_rankings)
+    )
+  )
+}
+
 unranked <- function(x, y, other_rankings = NULL) {
   all_items <- unique(c(x, y, other_rankings))
   list(setdiff(all_items, x), setdiff(all_items,y))
 }
 
 node_labels <- function(x, y, other_rankings = NULL) {
-  labs <- x
+  leftlabs <- x
   n_unranked <- purrr::map(unranked(x, y, other_rankings), length)
   if (n_unranked[1] > 0) {
-    labs <- append(labs, paste(n_unranked[1], "unranked"))
+    leftlabs <- append(leftlabs, paste(n_unranked[1], "UNRANKED"))
   }
-  labs <- append(labs, y)
+  rightlabs <- y
   if (n_unranked[2] > 0) {
-    labs <- append(labs, paste(n_unranked[2], "unranked"))
+    rightlabs <- append(rightlabs, paste(n_unranked[2], "UNRANKED"))
   }
-  labs
+  list(leftlabs, rightlabs)
 }
 
 node_pos <- function(x, y, other_rankings = NULL) {
@@ -64,10 +76,11 @@ node_pos <- function(x, y, other_rankings = NULL) {
   list(xpos, ypos)
 }
 
-fighter_nodes <- function(x, y, other_rankings = NULL) {
-  labs <- node_labels(x, y, other_rankings)
+graph_nodes <- function(x, y, other_rankings = NULL) {
+  labs <- unlist(node_labels(x, y, other_rankings))
   pos <- node_pos(x, y, other_rankings)
   n_nodes <- length(labs)
+  width <- max(0.5, 0.15 * nchar(labs))
   DiagrammeR::create_node_df(
     n = n_nodes,
     type = "item",
@@ -75,7 +88,21 @@ fighter_nodes <- function(x, y, other_rankings = NULL) {
     label = labs,
     x = pos[[1]],
     y = pos[[2]],
-    shape = "rectangle"
+    shape = "rectangle",
+    width = width
+  )
+}
+
+graph_edges <- function(x, y, other_rankings = NULL) {
+  labs   <- node_labels(x, y, other_rankings)
+  shift  <- length(labs[[1]])
+  notinx <- setdiff(y, x)
+  left   <- 1:length(x)
+  right  <- shift + purrr::map_dbl(x, function(j) ifelse(j %in% y, which(y == j), length(y) + 1))
+  DiagrammeR::create_edge_df(
+    from = left,
+    to   = right,
+    arrowhead = "none"
   )
 }
 
