@@ -2,10 +2,12 @@
 % Please edit documentation in R/kendall.R
 \name{zipit}
 \alias{zipit}
-\title{Auxiliary function.}
+\title{Auxiliary function, not for export
+Returns a list of 2-vectors, [(x1,y1),...,(xn,yn)]}
 \usage{
 zipit(x, y)
 }
 \description{
-Auxiliary function.
+Auxiliary function, not for export
+Returns a list of 2-vectors, [(x1,y1),...,(xn,yn)]
 }

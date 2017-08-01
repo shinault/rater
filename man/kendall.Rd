@@ -9,7 +9,7 @@ kendall(x, y, unranked_items = NULL)
 \arguments{
 \item{x, y}{ranking vectors of comparable items}
 
-\item{unranked_items}{vector of items that might not be in `x` or}
+\item{unranked_items}{vector of items that might not be in `x` or `y`}
 }
 \value{
 Numeric value the is the modified Kendall tau rank correlation
@@ -17,5 +17,6 @@ Numeric value the is the modified Kendall tau rank correlation
 \description{
 The Kendall τ-a correlation is a measure of similarity between two rankings
 of the same items.  This function is consistent with this definition, as well
-as a modification for rankings with some distinct items.
+as a modification for rankings with some distinct items or having different
+length.
 }

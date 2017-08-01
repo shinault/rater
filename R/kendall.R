@@ -12,24 +12,36 @@
 kendall <- function(x, y, unranked_items=NULL) {
   assertthat::assert_that(!anyDuplicated(x), !anyDuplicated(y),
                           msg = "duplicate entry in ranking")
+  # Relevant item sets
   all_items <- unique(c(x, y, unranked_items))
-  n_items <- length(all_items)
   x_unranked <- setdiff(all_items, x)
   y_unranked <- setdiff(all_items, y)
-  x_pairs <- combn(x,2)
-  x_pairs <- union(lapply(seq_len(ncol(x_pairs)), function(j) x_pairs[,j]),
-                   zipit(x, x_unranked))
-  y_pairs <- combn(y,2)
-  y_pairs <- union(lapply(seq_len(ncol(y_pairs)), function(j) y_pairs[,j]),
-                   zipit(y, y_unranked))
+  # Ranked pairs from each ranking vector
+  x_pairs <- get_pairs(x, x_unranked)
+  y_pairs <- get_pairs(y, y_unranked)
+  # Numeric values and return value
+  n_items <- length(all_items)
   n_conc <- length(intersect(x_pairs, y_pairs))
   n_disc <- length(intersect(x_pairs, Map(rev, y_pairs)))
   n_unlabelled <- choose(length(x_unranked), 2) + choose(length(y_unranked), 2)
   (2*n_conc - choose(n_items, 2)) / (n_conc + n_disc)
 }
 
-#' Auxiliary function.
+#' Auxiliary function, not for export
+#' Returns a list of 2-vectors, [(x1,y1),...,(xn,yn)]
 zipit <- function(x, y) {
   allpairs <- purrr::map(x, function(xi) purrr::map(y, function(yi) c(xi, yi)))
   unlist(allpairs, recursive = FALSE)
+}
+
+#' Auxiliary function, not for export
+#' Returns a list of 2-vectors for vectors x, y:
+#' (x_i, x_j) for i < j and (x_k, y_l) for all k, l
+#' In the ranking interpretation x is the ranking list and y is the list of
+#' items that is not ranked by x.
+get_pairs <- function(x, y) {
+  in_x_pairs <- combn(x,2)
+  all_pairs <- union(lapply(seq_len(ncol(in_x_pairs)), function(j) in_x_pairs[,j]),
+                   zipit(x, y))
+  all_pairs
 }

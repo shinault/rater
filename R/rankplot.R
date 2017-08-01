@@ -11,6 +11,12 @@ rankplot <- function(x, y, other_rankings = NULL) {
 
 #' Create the graph object for two rankings
 #'
+#' This returns a graph object in the sense of the \code{DiagrammeR} package.
+#' This allows for some customization prior to rendering.  You can read the
+#' documentation here: \url{http://rich-iannone.github.io/DiagrammeR/graph_creation.html}.
+#'
+#' @param x,y ranking vectors of comparable items
+#' @param other_rankings vector of items that might not be in `x` or `y`
 #' @export
 rankgraph <- function(x, y, other_rankings = NULL) {
   DiagrammeR::create_graph(
@@ -19,8 +25,13 @@ rankgraph <- function(x, y, other_rankings = NULL) {
   )
 }
 
-#' Create graph object for two disticnt graph objects
+#' Create graph object for two distinct graph objects
 #'
+#' This takes to graph objects created by \code{rankgraph} and positions them
+#' side by side.  To render the graph, use \code{DiagrammeR::render_graph}.
+#'
+#' @param x,y ranking vectors of comparable items
+#' @param other_rankings vector of items that might not be in `x` or `y`
 #' @export
 combine_rankgraphs <- function(left, right) {
   xshift <- 1.5 * left$nodes_df$width[1] + tail(left$nodes_df$x, n=1)
