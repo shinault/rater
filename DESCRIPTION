@@ -10,6 +10,7 @@ Author@R:
 Imports:
     assertthat,
     DiagrammeR,
+    dplyr,
     purrr
 License: GPL-2
 URL: shinault.netlify.com/project/rater

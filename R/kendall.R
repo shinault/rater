@@ -2,10 +2,11 @@
 #'
 #' The Kendall τ-a correlation is a measure of similarity between two rankings
 #' of the same items.  This function is consistent with this definition, as well
-#' as a modification for rankings with some distinct items.
+#' as a modification for rankings with some distinct items or having different
+#' length.
 #'
 #' @param x,y ranking vectors of comparable items
-#' @param unranked_items vector of items that might not be in `x` or
+#' @param unranked_items vector of items that might not be in `x` or `y`
 #' @return Numeric value the is the modified Kendall tau rank correlation
 #' @export
 kendall <- function(x, y, unranked_items=NULL) {
@@ -25,89 +26,6 @@ kendall <- function(x, y, unranked_items=NULL) {
   n_disc <- length(intersect(x_pairs, Map(rev, y_pairs)))
   n_unlabelled <- choose(length(x_unranked), 2) + choose(length(y_unranked), 2)
   (2*n_conc - choose(n_items, 2)) / (n_conc + n_disc)
-}
-
-#' Plot two rankings
-#'
-#' @export
-rankplot <- function(x, y, other_rankings = NULL) {
-  DiagrammeR::render_graph(
-    DiagrammeR::create_graph(
-      graph_nodes(x, y, other_rankings),
-      graph_edges(x, y, other_rankings)
-    )
-  )
-}
-
-unranked <- function(x, y, other_rankings = NULL) {
-  all_items <- unique(c(x, y, other_rankings))
-  list(setdiff(all_items, x), setdiff(all_items,y))
-}
-
-node_labels <- function(x, y, other_rankings = NULL) {
-  leftlabs <- x
-  n_unranked <- purrr::map(unranked(x, y, other_rankings), length)
-  if (n_unranked[1] > 0) {
-    leftlabs <- append(leftlabs, paste(n_unranked[1], "UNRANKED"))
-  }
-  rightlabs <- y
-  if (n_unranked[2] > 0) {
-    rightlabs <- append(rightlabs, paste(n_unranked[2], "UNRANKED"))
-  }
-  list(leftlabs, rightlabs)
-}
-
-node_pos <- function(x, y, other_rankings = NULL) {
-  gap <- 0.5
-  height <- 2*max(length(x), length(y))
-  xpos <- rep(0, times = length(x))
-  ypos <- seq(from = height, by = -gap, length.out = length(x))
-  n_unranked <- purrr::map(unranked(x, y, other_rankings), length)
-  if (n_unranked[1] > 0) {
-    xpos <- append(xpos, 0)
-    ypos <- append(ypos, tail(ypos, 1)-gap)
-  }
-  xpos <- append(xpos, rep(2, times = length(y)))
-  ypos <- append(ypos, seq(from = height, by = -gap, length.out = length(y)))
-  if (n_unranked[2] > 0) {
-    xpos <- append(xpos, 2)
-    ypos <- append(ypos, tail(ypos, 1)-gap)
-  }
-  list(xpos, ypos)
-}
-
-graph_nodes <- function(x, y, other_rankings = NULL) {
-  labs <- unlist(node_labels(x, y, other_rankings))
-  pos <- node_pos(x, y, other_rankings)
-  n_nodes <- length(labs)
-  width <- max(0.5, 0.15 * nchar(labs))
-  DiagrammeR::create_node_df(
-    n = n_nodes,
-    type = "item",
-    nodes = 1:n_nodes,
-    label = labs,
-    x = pos[[1]],
-    y = pos[[2]],
-    shape = "rectangle",
-    width = width
-  )
-}
-
-graph_edges <- function(x, y, other_rankings = NULL) {
-  labs   <- node_labels(x, y, other_rankings)
-  shift  <- length(labs[[1]])
-  left   <- 1:length(x)
-  right  <- shift + purrr::map_dbl(x, function(j) ifelse(j %in% y, which(y == j), length(y) + 1))
-  notinx <- shift + which(!(y %in% x))
-  right  <- append(right, notinx)
-  left   <- append(left, rep(shift, times = length(notinx)))
-  DiagrammeR::create_edge_df(
-    from = left,
-    to   = right,
-    arrowhead = "none",
-    tailport = "e",
-    headport = "w"
-  )
 }
 
 #' Auxiliary function.
