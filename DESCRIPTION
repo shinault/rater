@@ -1,9 +1,9 @@
 Package: rater
 Version: 0.1.0
 Type: Package
-Title: Create Ratings and Rankings for Anything
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Ratings and Rankings for Anything
+Description: Methods for comparing the relative performance of comptetitors
+    using head-to-head data.
 Author@R:
     person(c("Gregory", "M."), "Shinault", 
     email="gshinault@gmail.com", role=c("aut", "cre"))

@@ -6,7 +6,23 @@ rating and ranking methods.
 The project website is 
 [shinault.netlify.com/project/rater/](shinault.netlify.com/project/rater/).
 
+You can install this package using `devtools` at the R command line.  First, 
+make sure that `devtools` is installed.
+```r
+install.packages("devtools")
+```
+Then use the `install_github` function to install the package from GitHub.
+```r
+devtools::install_github("shinault/rater")
+```
 
+## Current Features
 
+The scope of the package is currently very limited.
+Development is in a very early phase; expect breaking changes.
+
+The function `kendall` computes a modification of the Kendall τ coefficient.
+
+Plots for comparing two ranking lists are provided by `rankplots`.
 
 
