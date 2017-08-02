@@ -21,6 +21,12 @@ devtools::install_github("shinault/rater")
 The scope of the package is currently very limited.
 Development is in a very early phase; expect breaking changes.
 
+The functions `massey` and `massey_adv` return the Massey and advanced Massey
+ratings, respectively.  These ratings are based on points scored, but any 
+useful metric can be used.
+
+The function `colley` returns the Colley ratings based on net wins.
+
 The function `kendall` computes a modification of the Kendall τ coefficient.
 
 Plots for comparing two ranking lists are provided by `rankplots`.
