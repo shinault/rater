@@ -27,6 +27,12 @@ useful metric can be used.
 
 The function `colley` returns the Colley ratings based on net wins.
 
+The function `markov` returns the Markov ratings based on a stochastic matrix
+provided by the user.  This method has tremendous flexibility, as the transition
+probabilities can be based on anything that proves useful.  In the context of 
+sports this can be wins, points scored, or other sport-specific statistics.
+The principal is the same as the PageRank algorithm.
+
 The function `kendall` computes a modification of the Kendall τ coefficient.
 
 Plots for comparing two ranking lists are provided by `rankplots`.
