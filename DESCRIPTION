@@ -2,7 +2,7 @@ Package: rater
 Version: 0.1.0
 Type: Package
 Title: Ratings and Rankings for Anything
-Description: Methods for comparing the relative performance of comptetitors
+Description: Methods for comparing the relative performance of competitors
     using head-to-head data.
 Author@R:
     person(c("Gregory", "M."), "Shinault", 
