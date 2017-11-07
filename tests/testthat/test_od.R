@@ -20,7 +20,7 @@ yardage_mtx <- matrix(
   byrow = TRUE
 )
 
-score_mtx <- data.frame(
+score_rtg <- data.frame(
   Off = c(33.99, 151.6, 48.66, 82.05, 114.8),
   Def = c(1.691, 0.8029, 1.164, 0.9675, 0.4104),
   Rtg = c(20.1, 188.8, 41.8, 84.8, 279.8)
@@ -33,10 +33,10 @@ yardage_rtg <- data.frame(
 )
 
 test_that("OD ratings consistent with Langville/Meyer examples", {
-  expect_equal(od(score_mtx)['Off'], score_rtg['Off'], tolerance = 1e-1)
-  expect_equal(od(score_mtx)['Def'], score_rtg['Def'], tolerance = 1e-3)
-  expect_equal(od(score_mtx)['Rtg'], score_rtg['Rtg'], tolerance = 1e-1)
-  expect_equal(od(yardage_mtx)['Off'], yardage_rtg['Off'], tolerance = 1e0)
-  expect_equal(od(yardage_mtx)['Def'], yardage_rtg['Def'], tolerance = 1e-3)
-  expect_equal(od(yardage_mtx)['Rtg'], yardage_rtg['Rtg'], tolerance = 1e0)
+  expect_equal(od(score_mtx)[, 1], score_rtg[, 1], tolerance = 1e-1)
+  expect_equal(od(score_mtx)[, 2], score_rtg[, 2], tolerance = 1e-3)
+  expect_equal(od(score_mtx)[, 3], score_rtg[, 3], tolerance = 1e-1)
+  expect_equal(od(yardage_mtx)[, 1], yardage_rtg[, 1], tolerance = 1e0)
+  expect_equal(od(yardage_mtx)[, 2], yardage_rtg[, 2], tolerance = 1e-3)
+  expect_equal(od(yardage_mtx)[, 3], yardage_rtg[, 3], tolerance = 1e0)
 })
