@@ -35,6 +35,10 @@ The principal is the same as the PageRank algorithm.
 
 The function `kendall` computes a modification of the Kendall τ coefficient.
 
+The function `od` creates ranking for offense, defense, and a combined total
+rating.  This method is flexible.  You can obtain offense and defense ratings
+for any facet of the competition in question.
+
 Plots for comparing two ranking lists are provided by `rankplots`.
 
 
